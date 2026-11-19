@@ -10,17 +10,17 @@ def load_data(filepath:str, column:int)->tuple[list, int]:
 
     with open(filepath, 'r') as infile:
         for line_number, line in enumerate(infile, start=1):
-            values = line.strip().split("\t")
-
+        
             try:
-                num = values[column]
-                count += 1 
+                num = line.split("\t")[column]
+                count += 1
 
                 try:
                     num = float(num)
 
                     if not math.isnan(num):
                         numbers.append(num)
+                        
                 
                 except ValueError:
                     pass
@@ -31,6 +31,12 @@ def load_data(filepath:str, column:int)->tuple[list, int]:
                     f"{column} in line {line_number} in file: {filepath}"
                 )
 
+    if len(numbers) == 0:
+        sys.exit(
+            f"Error: There were no valid number(s) in column "
+            f"{column} in file: {filepath}"
+        )
+
     return numbers, count
 
 
@@ -40,10 +46,9 @@ def load_data(filepath:str, column:int)->tuple[list, int]:
 def calculate_average(numbers:list)->float:
     # TODO - Complete the function to return the average of the list of numbers
    
-   total = sum(numbers)
-   average = total / len(numbers)
+    average = sum(numbers) / len(numbers)
 
-   return average
+    return average
    
    
  
@@ -100,6 +105,5 @@ def calculate_median(number:list)->float:
         median = float(sorted_numbers[middle])
 
     return median
-
 
 
